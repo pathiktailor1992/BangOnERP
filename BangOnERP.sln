@@ -15,6 +15,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserRoles", "UserRoles\User
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MasterLocation", "MasterCountry\MasterLocation.csproj", "{16909644-9342-4072-BAFA-5297857F4523}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testing", "Testing", "{08F79CD0-A683-49BC-BB67-C96186ACA7EA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ERPLoginTester", "ERPLoginTester\ERPLoginTester.csproj", "{46BA1C38-ACED-4438-9E3A-DE6AC5F5DFD4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +41,10 @@ Global
 		{16909644-9342-4072-BAFA-5297857F4523}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{16909644-9342-4072-BAFA-5297857F4523}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{16909644-9342-4072-BAFA-5297857F4523}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46BA1C38-ACED-4438-9E3A-DE6AC5F5DFD4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46BA1C38-ACED-4438-9E3A-DE6AC5F5DFD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46BA1C38-ACED-4438-9E3A-DE6AC5F5DFD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46BA1C38-ACED-4438-9E3A-DE6AC5F5DFD4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -46,6 +54,7 @@ Global
 		{D10E60E0-3AE5-4763-91C2-1DD59B5196E6} = {B79DD890-F441-4F5C-858C-A3B056614BDD}
 		{809E2721-C148-460D-BC59-59A26157F068} = {B79DD890-F441-4F5C-858C-A3B056614BDD}
 		{16909644-9342-4072-BAFA-5297857F4523} = {B79DD890-F441-4F5C-858C-A3B056614BDD}
+		{46BA1C38-ACED-4438-9E3A-DE6AC5F5DFD4} = {08F79CD0-A683-49BC-BB67-C96186ACA7EA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0BBDF314-CEBC-4A3F-80FF-2992021BF989}

@@ -38,19 +38,10 @@ namespace ERPLoginModule.Service
                     db.LoginSuperLogins.Remove(delUser);
                     db.SaveChanges();
                     transaction.Commit();
-                    var gh = (db.VwLoginLoginUsers.ToList().Select(m => new
-                    {
-                        LoginActive = m.LoginActive.ToString(),
-                        LoginSuperLoginId = EncryptionDecryption.Encryption(m.LoginSuperLoginId.ToString()),
-                        LoginPassword = "",
-                        LoginCreatedBy = m.LoginCreatedBy.ToString(),
-                        LoginCreatedDate = m.LoginCreatedDate.ToString(),
-                        LoginUpdatedBy = m.LoginUpdatedBy.ToString(),
-                        LoginUpdatedDate = m.LoginUpdatedDate.ToString(),
-                        LoginUsername = m.LoginUsername.ToString()
-                    }));
 
-                    return gh;
+                    var attachments = mapper.Map<List<VwLoginLoginUser>, List<LoginUser>>(db.VwLoginLoginUsers.ToList());
+                    return attachments;
+
                 }
                 catch (Exception ee)
                 {
@@ -80,18 +71,8 @@ namespace ERPLoginModule.Service
         {
             try
             {
-                var gh= (db.VwLoginLoginUsers.ToList().Select(m=>new {
-                    LoginActive= m.LoginActive.ToString(),
-                    LoginSuperLoginId=EncryptionDecryption.Encryption(m.LoginSuperLoginId.ToString()),
-                    LoginPassword="",
-                    LoginCreatedBy= m.LoginCreatedBy.ToString(),
-                    LoginCreatedDate= m.LoginCreatedDate.ToString(),
-                    LoginUpdatedBy= m.LoginUpdatedBy.ToString(),
-                    LoginUpdatedDate= m.LoginUpdatedDate.ToString(),
-                    LoginUsername= m.LoginUsername.ToString()
-                }));
-
-                return gh;
+                var attachments = mapper.Map<List<VwLoginLoginUser>,List<LoginUser>>(db.VwLoginLoginUsers.ToList());
+                return attachments;
             }
             catch(Exception ee)
             {

@@ -23,10 +23,10 @@ namespace ERPLoginModule.Controllers
         private LoginI loginRepo;
         private readonly IMapper _mapper;
 
-        public LoginController(LoginI _loginRepo, IMapper mapper)
+        public LoginController(LoginI _loginRepo)// IMapper mapper)
         {
             loginRepo = _loginRepo;
-            _mapper = mapper;
+//            _mapper = mapper;
 
         }
 
@@ -61,7 +61,7 @@ namespace ERPLoginModule.Controllers
             {
                 if(!String.IsNullOrEmpty(LoginSuperLoginId))
                 {
-                    var userViewModel = _mapper.Map<List<LoginUser>>(loginRepo.Edited(LoginSuperLoginId));
+                  //  var userViewModel = _mapper.Map<List<LoginUser>>(loginRepo.Edited(LoginSuperLoginId));
                     return Ok(loginRepo.Edited(LoginSuperLoginId));
                 }
                 else
