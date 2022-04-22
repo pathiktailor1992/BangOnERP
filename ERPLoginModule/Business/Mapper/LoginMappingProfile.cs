@@ -13,7 +13,6 @@ namespace ERPLoginModule.Business.Mapper
     {
         public LoginMappingProfile()
         {
-         //   CreateMap<VwLoginLoginUser, LoginUser>();
             
             CreateMap<VwLoginLoginUser, LoginUser>()
                              .ForMember(dest =>dest.LoginSuperLoginId, act => act.MapFrom(src =>EncryptionDecryption.Encryption(src.LoginSuperLoginId.ToString())))
@@ -24,8 +23,7 @@ namespace ERPLoginModule.Business.Mapper
                              .ForMember(dest => dest.LoginUpdatedDate, act => act.MapFrom(src => Convert.ToString(src.LoginUpdatedDate.ToString())))
                              .ForMember(dest => dest.LoginUpdatedBy, act => act.MapFrom(src => Convert.ToString(src.LoginUpdatedBy.ToString())));
 
-          //  CreateMap<List<VwLoginLoginUser>, List<LoginUser>>();
-
+           
         }
     }
 }

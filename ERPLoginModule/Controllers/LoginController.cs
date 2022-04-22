@@ -21,28 +21,31 @@ namespace ERPLoginModule.Controllers
     public class LoginController : Controller
     {
         private LoginI loginRepo;
-        private readonly IMapper _mapper;
+
+       // public LoginController() { }
 
         public LoginController(LoginI _loginRepo)// IMapper mapper)
         {
             loginRepo = _loginRepo;
-//            _mapper = mapper;
-
         }
 
         // GET: api/<LoginController>
 
 
         [Route("GetAll")]
-        //[Authorize]
-        //[Authorize(Roles="Admin")]
+        [Authorize]
+        [Authorize(Roles="Admin")]
         [HttpGet]
-        public  IActionResult Get()
+        public async Task<IActionResult> Get()
         {
             try
             {
-               
-                return Ok( loginRepo.GetAll());
+                var result =await loginRepo.GetAll();
+                if (result == null)
+                {
+                    return NotFound();
+                }
+                return Ok( result);
             }
             catch(Exception ee)
             {
@@ -52,17 +55,23 @@ namespace ERPLoginModule.Controllers
 
         // GET api/<LoginController>/5
         [Route("GetById")]
-        //[Authorize]
-        //[Authorize(Roles = "Admin")]
+        [Authorize]
+        [Authorize(Roles = "Admin")]
         [HttpGet]
-        public IActionResult Get(string LoginSuperLoginId)
+        public async Task<IActionResult> Get(string LoginSuperLoginId)
         {
             try
             {
-                if(!String.IsNullOrEmpty(LoginSuperLoginId))
+                if(!String.IsNullOrEmpty(LoginSuperLoginId) && LoginSuperLoginId!="0")
                 {
-                  //  var userViewModel = _mapper.Map<List<LoginUser>>(loginRepo.Edited(LoginSuperLoginId));
-                    return Ok(loginRepo.Edited(LoginSuperLoginId));
+
+                    VwLoginLoginUser kh =await loginRepo.Edited(LoginSuperLoginId).ConfigureAwait(false);
+                    if (kh == null)
+                    {
+                        return NotFound("Invalid Data Supplied");
+                    }
+                    
+                    return Ok(kh);
                 }
                 else
                 {
@@ -80,12 +89,21 @@ namespace ERPLoginModule.Controllers
         [Authorize]
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public IActionResult Post(LoginSuperLogin supLogin)
+        public async Task<IActionResult>  Post(LoginSuperLogin supLogin)
         {
             try { 
-            if(supLogin!= null)
+            if(supLogin!= null && ModelState.IsValid)
                 {
-                    return Ok(loginRepo.Inserted(supLogin));
+                    var result = await loginRepo.Inserted(supLogin);
+                    if (result != null)
+                    {
+                        return Ok(result);
+
+                    }
+                    else
+                    {
+                        return BadRequest("Invalid Data Supplied");
+                    }
                 }
                 else
                 {
@@ -102,14 +120,13 @@ namespace ERPLoginModule.Controllers
         [Route("LoginService")]
         [Authorize]
         [HttpPut]
-        public IActionResult Put(LoginUser supLogin)
+        public async Task<IActionResult> Put(LoginUser supLogin)
         {
             try
             {
-                if (supLogin != null)
+                if (supLogin != null && ModelState.IsValid)
                 {
-                    supLogin.LoginSuperLoginId = (EncryptionDecryption.Decryption(supLogin.LoginSuperLoginId.ToString()));
-                    return Ok(loginRepo.Updated(supLogin));
+                    return Ok(await loginRepo.Updated(supLogin));
                 }
                 else
                 {
@@ -127,13 +144,13 @@ namespace ERPLoginModule.Controllers
         [Authorize]
         [Authorize(Roles = "Admin")]
         [HttpDelete]
-        public IActionResult Delete(string Desposables)
+        public async Task<IActionResult> Delete(string Desposables)
         {
             try
             {
                 if (!String.IsNullOrEmpty(Desposables))
                 {
-                    return Ok(loginRepo.Deleted(Desposables));
+                    return Ok(await loginRepo.Deleted(Desposables));
                 }
                 else
                 {

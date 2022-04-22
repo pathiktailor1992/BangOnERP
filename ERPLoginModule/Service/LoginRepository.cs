@@ -27,7 +27,7 @@ namespace ERPLoginModule.Service
             mapper = _mapper;
         }
 
-        public  object Deleted(string id)
+        public async Task<List<LoginUser>> Deleted(string id)
         {
             using (var transaction = db.Database.BeginTransaction())
             {
@@ -36,7 +36,7 @@ namespace ERPLoginModule.Service
                     string idstr = EncryptionDecryption.Decryption(id);
                     LoginSuperLogin delUser = db.LoginSuperLogins.Find(Convert.ToInt32(idstr));
                     db.LoginSuperLogins.Remove(delUser);
-                    db.SaveChanges();
+                    await db.SaveChangesAsync();
                     transaction.Commit();
 
                     var attachments = mapper.Map<List<VwLoginLoginUser>, List<LoginUser>>(db.VwLoginLoginUsers.ToList());
@@ -46,41 +46,45 @@ namespace ERPLoginModule.Service
                 catch (Exception ee)
                 {
                     transaction.Rollback();
-                    return ee.ToString();
+                    throw;
                 }
             }
         }
 
-        public object Edited(string id)
+        public async Task<VwLoginLoginUser> Edited(string id)
         {
             try
             {
                 string idstr= EncryptionDecryption.Decryption(id);
-                var gh = db.LoginSuperLogins.FromSqlRaw("GetSuperLoginByID" + " " + idstr).ToList().FirstOrDefault();
+                if(Convert.ToInt32(idstr)<=0)
+                {
+                    return null;
+                }
+                var gh = await db.VwLoginLoginUsers.FirstOrDefaultAsync(x => x.LoginSuperLoginId == Convert.ToInt32(idstr));
                 gh.LoginSuperLoginId = 0;
-                gh.LoginPassword = EncryptionDecryption.Decryption(gh.LoginPassword);
-                return mapper.Map<LoginSuperLogin>(gh);
+                //                gh.LoginPassword = EncryptionDecryption.Decryption(gh.LoginPassword);
+                return gh;
             }
             catch (Exception ee)
             {
-                return ee.ToString();
+                throw;
             }
         }
 
-        public object GetAll()
+        public async Task<List<LoginUser>> GetAll()
         {
             try
             {
-                var attachments = mapper.Map<List<VwLoginLoginUser>,List<LoginUser>>(db.VwLoginLoginUsers.ToList());
+                var attachments = mapper.Map<List<VwLoginLoginUser>,List<LoginUser>>(await db.VwLoginLoginUsers.ToListAsync());
                 return attachments;
             }
-            catch(Exception ee)
+            catch (Exception ee)
             {
-                return ee.ToString();
+                throw;
             }
         }
 
-        public string Inserted(LoginSuperLogin obj)
+        public async Task<string> Inserted(LoginSuperLogin obj)
         {
             using (var transaction = db.Database.BeginTransaction())
             {
@@ -89,25 +93,25 @@ namespace ERPLoginModule.Service
                     obj.LoginPassword = EncryptionDecryption.Encryption(obj.LoginPassword);
                     obj.LoginCreatedDate = DateTime.Now;
                     db.LoginSuperLogins.Add(obj);
-                    db.SaveChanges();
+                    await db.SaveChangesAsync();
                     transaction.Commit();
                     return EncryptionDecryption.Encryption(obj.LoginSuperLoginId.ToString());
                 }
                 catch (Exception ee)
                 {
                     transaction.Rollback();
-                    return ee.ToString();
+                    throw;
                 }
             }
         }
 
-        public string Updated(LoginUser obj)
+        public async Task<string> Updated(LoginUser obj)
         {
             using (var transaction = db.Database.BeginTransaction())
             {
                 try
                 {
-
+                    obj.LoginSuperLoginId = (EncryptionDecryption.Decryption(obj.LoginSuperLoginId.ToString()));
                     LoginSuperLogin getFrmId = db.LoginSuperLogins.AsNoTrackingWithIdentityResolution().
                     Single(m => m.LoginSuperLoginId ==Convert.ToInt32(obj.LoginSuperLoginId));
 
@@ -115,7 +119,7 @@ namespace ERPLoginModule.Service
                     getFrmId.LoginUsername = obj.LoginUsername;
                     getFrmId.LoginActive = obj.LoginActive;
                     db.LoginSuperLogins.Update(getFrmId);
-                    db.SaveChanges();
+                    await db.SaveChangesAsync();
                     transaction.Commit();
                     return EncryptionDecryption.Encryption(obj.LoginSuperLoginId.ToString());
                 }
@@ -123,7 +127,7 @@ namespace ERPLoginModule.Service
                 catch (Exception ee)
                 {
                     transaction.Rollback();
-                    return ee.ToString();
+					throw;
                 }
             }
         }
@@ -166,7 +170,7 @@ namespace ERPLoginModule.Service
             }
             catch(Exception ee)
             {
-                return ee.ToString();
+				throw;
             }
         }
     }
