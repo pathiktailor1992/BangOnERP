@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MasterLocation", "MasterCou
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testing", "Testing", "{08F79CD0-A683-49BC-BB67-C96186ACA7EA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ERPLoginTester", "ERPLoginTester\ERPLoginTester.csproj", "{46BA1C38-ACED-4438-9E3A-DE6AC5F5DFD4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ERPLoginTester", "ERPLoginTester\ERPLoginTester.csproj", "{46BA1C38-ACED-4438-9E3A-DE6AC5F5DFD4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
